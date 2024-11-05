@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/100DaysOfAI_Portfolio/static/css/main.12385e57.css",
-    "main.js": "/100DaysOfAI_Portfolio/static/js/main.d74a034f.js",
+    "main.js": "/100DaysOfAI_Portfolio/static/js/main.6b08c60c.js",
     "index.html": "/100DaysOfAI_Portfolio/index.html",
     "main.12385e57.css.map": "/100DaysOfAI_Portfolio/static/css/main.12385e57.css.map",
-    "main.d74a034f.js.map": "/100DaysOfAI_Portfolio/static/js/main.d74a034f.js.map"
+    "main.6b08c60c.js.map": "/100DaysOfAI_Portfolio/static/js/main.6b08c60c.js.map"
   },
   "entrypoints": [
     "static/css/main.12385e57.css",
-    "static/js/main.d74a034f.js"
+    "static/js/main.6b08c60c.js"
   ]
 }
