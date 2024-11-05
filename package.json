@@ -1,6 +1,7 @@
 {
   "name": "ai-progress-portfolio",
   "version": "0.1.0",
+  "homepage": "https://Nirikshan95.github.io/100DaysOfAI_Portfolio",
   "private": true,
   "dependencies": {
     "@react-spring/web": "^9.7.5",
