@@ -1,0 +1,44 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@keyframes float {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 0.05;
+    }
+    50% {
+      transform: translateY(-100px) rotate(180deg);
+      opacity: 0.1;
+    }
+  }
+
+.animated-bg span {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    animation: float 15s infinite;
+  }
+.parallax-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    transform: translateZ(-1px) scale(2);
+    z-index: -1;
+  }
+.day-entry {
+    @apply bg-gray-800 rounded-lg p-6 transform hover:scale-105 transition-all cursor-pointer;
+  }
+.popup {
+    @apply fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50;
+  }
+.popup.active {
+    @apply flex;
+  }
+.popup-content {
+    @apply bg-gray-800 rounded-lg p-8 max-w-2xl w-full mx-4;
+  }
