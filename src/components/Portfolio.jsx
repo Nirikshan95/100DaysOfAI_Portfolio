@@ -1026,7 +1026,7 @@ const ProgressCard = ({ entry, index }) => (
 
         <div className="rounded-xl overflow-hidden shadow-2xl">
           <img
-            src="images/journey.png"
+            src="/images/journey.png"
             alt="My Learning Journey"
             className="w-full h-auto"
             onError={(e) => {

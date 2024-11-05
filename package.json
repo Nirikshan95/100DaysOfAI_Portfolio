@@ -2,7 +2,6 @@
   "name": "ai-progress-portfolio",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://Nirikshan95.github.io/100DaysOfAI_Portfolio",
   "dependencies": {
     "@react-spring/web": "^9.7.5",
     "@tailwindcss/typography": "^0.5.15",
@@ -27,9 +26,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
