@@ -106,6 +106,7 @@ const Portfolio = () => {
   };
 
   const loadWeeklyReflections = () => {
+    const basePath = getBasePath();
     Papa.parse("{basePath}/data/reflection.csv", {
       download: true,
       delimiter: '|',
