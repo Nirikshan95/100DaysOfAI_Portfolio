@@ -633,7 +633,7 @@ const Portfolio = () => {
           <div className="md:hidden">
             <div className="flex items-center justify-between py-3">
               {/* Your logo or brand name could go here */}
-              <div className="text-gray-300 font-bold">100 Days of AI</div>
+              <div className="text-gray-300 font-bold">Portfolio</div>
               
               {/* Mobile Menu Button */}
               <button
