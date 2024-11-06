@@ -1,7 +1,7 @@
 {
   "name": "ai-progress-portfolio",
   "version": "0.1.0",
-  "homepage": "https://Nirikshan95.github.io/100DaysOfAI_Portfolio",
+  "homepage": "https://nirikshan95.github.io/100DaysOfAI_Portfolio",
   "private": true,
   "dependencies": {
     "@react-spring/web": "^9.7.5",
@@ -23,14 +23,15 @@
     "tailwindcss": "^3.4.14",
     "web-vitals": "^2.1.4"
   },
+  
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
+  "start": "react-scripts start",
+  "build": "react-scripts build",
+  "test": "react-scripts test",
+  "eject": "react-scripts eject",
+  "predeploy": "npm run build",
+  "deploy": "gh-pages -d build"
+},
   "eslintConfig": {
     "extends": [
       "react-app",
