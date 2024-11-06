@@ -584,12 +584,31 @@ const Portfolio = () => {
   // Update the Navigation component
   const Navigation = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
+  
+    useEffect(() => {
+      const handleScroll = () => {
+        if (window.pageYOffset > 0) {
+          setIsScrolled(true);
+        } else {
+          setIsScrolled(false);
+        }
+      };
+  
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
   
     const toggleMenu = () => {
       setIsMenuOpen(!isMenuOpen);
     };
+  
     return (
-      <nav className="sticky top-0 bg-gray-800/90 backdrop-blur-sm z-50 border-b border-gray-700 transition-all duration-300">
+      <nav
+        className={`fixed top-0 left-0 right-0 bg-gray-800/90 backdrop-blur-sm z-50 border-b border-gray-700 transition-all duration-300 ${
+          isScrolled ? 'shadow-md' : ''
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4">
           {/* Desktop Navigation */}
           <div className="hidden md:block">
@@ -656,9 +675,6 @@ const Portfolio = () => {
     );
   };
   
-
-  
-
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Animated Background */}
