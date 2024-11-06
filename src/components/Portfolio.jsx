@@ -107,44 +107,56 @@ const Portfolio = () => {
 
   const loadWeeklyReflections = () => {
     const basePath = getBasePath();
-    Papa.parse("{basePath}/data/reflection.csv", {
+    Papa.parse(`${basePath}/data/reflection.csv`, {
       download: true,
       delimiter: '|',
       header: true,
       complete: (results) => {
         setWeeklyReflections(results.data.filter(reflection => reflection.weekNumber));
+      },
+      error: (error) => {
+        console.error("Error loading weekly reflections:", error.message);
       }
     });
   };
-
+  
   const loadTools = () => {
-    Papa.parse("/data/tools.csv", {
+    const basePath = getBasePath();
+    Papa.parse(`${basePath}/data/tools.csv`, {
       download: true,
       header: true,
       complete: (results) => {
         const validTools = results.data.filter(tool => tool.name);
         setTools(validTools);
         setDisplayedTools(validTools.slice(0, toolsPerLoad));
+      },
+      error: (error) => {
+        console.error("Error loading tools:", error.message);
       }
     });
   };
-
+  
   const loadMoreTools = () => {
     const currentLength = displayedTools.length;
     const newTools = tools.slice(currentLength, currentLength + toolsPerLoad);
     setDisplayedTools([...displayedTools, ...newTools]);
   };
-
+  
   const loadAchievements = () => {
-    Papa.parse("/data/achievements.csv", {
+    const basePath = getBasePath();
+    Papa.parse(`${basePath}/data/achievements.csv`, {
       download: true,
       header: true,
       delimiter: '|',
       complete: (results) => {
         setAchievements(results.data.filter(achievement => achievement.title));
+      },
+      error: (error) => {
+        console.error("Error loading achievements:", error.message);
       }
     });
   };
+  
 
   // Get color gradient based on day number
   const getGradient = (index) => {
