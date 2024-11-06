@@ -700,7 +700,7 @@ const Portfolio = () => {
             {/* Profile Picture */}
             <div className="absolute inset-8 rounded-full overflow-hidden border-4 border-white/10">
               <img
-                src="/images/me.png"
+                src="${baseUrl}/images/me.png"
                 alt="Mahesh Ketam"
                 className="w-full h-full object-cover transition-transform hover:scale-105"
               />
@@ -1047,11 +1047,11 @@ const Portfolio = () => {
 
           <div className="rounded-xl overflow-hidden shadow-2xl">
             <img
-              src="/images/journey.png"
+              src="${baseUrl}/images/journey.png"
               alt="My Learning Journey"
               className="w-full h-auto"
               onError={(e) => {
-                e.target.src = '/images/placeholder.jpg';
+                e.target.src = '${baseUrl}/images/placeholder.jpg';
                 e.target.onerror = null;
               }}
             />
@@ -1167,7 +1167,7 @@ const Portfolio = () => {
               </div>
               <div className="flex flex-col items-center space-y-6">
                 <img
-                  src="/images/badge.jpg"
+                  src="${baseUrl}/images/badge.jpg"
                   alt="Completionist Badge"
                   className="w-48 h-48 object-contain rounded-full shadow-lg"
                 />
