@@ -106,7 +106,7 @@ const Portfolio = () => {
   };
 
   const loadWeeklyReflections = () => {
-    Papa.parse("/data/reflection.csv", {
+    Papa.parse("{basePath}/data/reflection.csv", {
       download: true,
       delimiter: '|',
       header: true,
