@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, Award, Users, Share2, ExternalLink, Star, Milestone, Link2, Mail, ArrowUpRight, X, Code2, Brain, Calendar, Sparkles, Wrench, BookOpen, ChevronRight, Trophy, Book, LinkedinIcon, ArrowLeft, ArrowRight } from 'lucide-react';
 import Papa from 'papaparse';
+const baseUrl = process.env.PUBLIC_URL || '';
 
 const Portfolio = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -155,8 +156,7 @@ const Portfolio = () => {
         console.error("Error loading achievements:", error.message);
       }
     });
-  };
-  
+  };  
 
   // Get color gradient based on day number
   const getGradient = (index) => {
@@ -190,6 +190,7 @@ const Portfolio = () => {
     return () => observer.disconnect();
   }, []);
   const ProgressCard = ({ entry, index }) => (
+    
     <div
       className="group relative bg-gray-900 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer border border-gray-800 hover:border-blue-500/50"
       onClick={() => setActivePopup({ ...entry, index })}
@@ -208,7 +209,7 @@ const Portfolio = () => {
         <div className="relative h-48 mb-6 rounded-lg overflow-hidden">
           <img
             className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
-            src={`/images/daily progress/day${index + 1}.jpg`}
+            src={`${baseUrl}/images/daily progress/day${index + 1}.jpg`}
             alt={`Day ${index + 1} Progress`}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent" />
@@ -274,10 +275,10 @@ const Portfolio = () => {
             <div className="relative h-72 rounded-lg overflow-hidden">
               <img
                 className="w-full h-full object-cover"
-                src={`/images/daily progress/day${entry.index + 1}.jpg`}
+                src={`${baseUrl}/images/daily progress/day${entry.index + 1}.jpg`}
                 alt={entry.title}
                 onError={(e) => {
-                  e.target.src = '/images/placeholder.jpg';
+                  e.target.src = '${baseUrl}/images/placeholder.jpg';
                   e.target.onerror = null;
                 }}
               />
@@ -359,7 +360,7 @@ const Portfolio = () => {
       setIsImageLoading(true);
     }, [reflection]);
 
-    const imagePath = `/images/reflections/week${reflection.weekNumber}.png`;
+    const imagePath = `${baseUrl}/images/reflections/week${reflection.weekNumber}.png`;
 
     return (
       <div
@@ -388,7 +389,7 @@ const Portfolio = () => {
               <img
                 className={`w-full h-full object-cover transition-opacity duration-300 ${isImageLoading ? 'opacity-0' : 'opacity-100'
                   }`}
-                src={imageError ? '/images/placeholder.jpg' : imagePath}
+                src={imageError ? '${baseUrl}/images/placeholder.jpg' : imagePath}
                 alt={`Week ${reflection.weekNumber} Reflection`}
                 onLoad={() => {
                   setIsImageLoading(false);
@@ -445,11 +446,11 @@ const Portfolio = () => {
         <div className="relative flex justify-between items-start mb-6">
           <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-gray-700 to-gray-800 p-2 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
             <img
-              src={`/images/tools/logo${tool.logoNumber}.png`}
+              src={`${baseUrl}/images/tools/logo${tool.logoNumber}.png`}
               alt={`${tool.name} logo`}
               className="w-full h-full object-contain"
               onError={(e) => {
-                e.target.src = '/images/tools/placeholder.jpg';
+                e.target.src = '${baseUrl}/images/tools/placeholder.jpg';
                 e.target.onerror = null;
               }}
             />
