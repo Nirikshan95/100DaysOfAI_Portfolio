@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, Award, Users, Share2, ExternalLink, Star, Milestone, Link2, Mail, ArrowUpRight, X, Code2, Brain, Calendar, Sparkles, Wrench, BookOpen, ChevronRight, Trophy, Book, LinkedinIcon, ArrowLeft, ArrowRight } from 'lucide-react';
+import { ChevronDown, Award, Users, Share2, ExternalLink, Star, Milestone, Link2, Mail, ArrowUpRight, Menu, X, Code2, Brain, Calendar, Sparkles, Wrench, BookOpen, ChevronRight, Trophy, Book, LinkedinIcon, ArrowLeft, ArrowRight } from 'lucide-react';
 import Papa from 'papaparse';
 const baseUrl = process.env.PUBLIC_URL || '';
 
@@ -582,25 +582,82 @@ const Portfolio = () => {
     setCurrentProjectIndex((prev) => (prev - 1 + futureProjects.length) % futureProjects.length);
   };
   // Update the Navigation component
-  const Navigation = () => (
-    <nav className="sticky top-0 bg-gray-800/90 backdrop-blur-sm z-50 border-b border-gray-700 transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-4">
-        <ul className="flex justify-center space-x-8 py-4">
-          {navLinks.map(({ label, target }) => (
-            <li key={target}>
+  const Navigation = () => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+    const toggleMenu = () => {
+      setIsMenuOpen(!isMenuOpen);
+    };
+    return (
+      <nav className="sticky top-0 bg-gray-800/90 backdrop-blur-sm z-50 border-b border-gray-700 transition-all duration-300">
+        <div className="max-w-7xl mx-auto px-4">
+          {/* Desktop Navigation */}
+          <div className="hidden md:block">
+            <ul className="flex justify-center space-x-8 py-4">
+              {navLinks.map(({ label, target }) => (
+                <li key={target}>
+                  <button
+                    onClick={() => scrollToSection(target)}
+                    className={`hover:text-blue-400 transition-all duration-300 ${
+                      activeSection === target ? 'text-blue-400 font-bold' : 'text-gray-300'
+                    }`}
+                  >
+                    {label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+  
+          {/* Mobile Navigation */}
+          <div className="md:hidden">
+            <div className="flex items-center justify-between py-3">
+              {/* Your logo or brand name could go here */}
+              <div className="text-gray-300 font-bold">Portfolio</div>
+              
+              {/* Mobile Menu Button */}
               <button
-                onClick={() => scrollToSection(target)}
-                className={`hover:text-blue-400 transition-all duration-300 ${activeSection === target ? 'text-blue-400 font-bold' : 'text-gray-300'
-                  }`}
+                onClick={toggleMenu}
+                className="text-gray-300 hover:text-blue-400 transition-all duration-300"
               >
-                {label}
+                {isMenuOpen ? (
+                  <X size={24} />
+                ) : (
+                  <Menu size={24} />
+                )}
               </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </nav>
-  );
+            </div>
+  
+            {/* Mobile Menu Items */}
+            {isMenuOpen && (
+              <div className="pb-4">
+                <ul className="space-y-2">
+                  {navLinks.map(({ label, target }) => (
+                    <li key={target}>
+                      <button
+                        onClick={() => {
+                          scrollToSection(target);
+                          setIsMenuOpen(false);
+                        }}
+                        className={`block w-full text-left px-4 py-2 hover:bg-gray-700 rounded transition-all duration-300 ${
+                          activeSection === target ? 'text-blue-400 font-bold' : 'text-gray-300'
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      </nav>
+    );
+  };
+  
+
+  
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
