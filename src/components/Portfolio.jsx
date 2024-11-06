@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, Award, Users, Share2, ExternalLink, Star, Milestone, Link2, Mail, ArrowUpRight, Menu, X, Code2, Brain, Calendar, Sparkles, Wrench, BookOpen, ChevronRight, Trophy, Book, LinkedinIcon, ArrowLeft, ArrowRight } from 'lucide-react';
 import Papa from 'papaparse';
@@ -584,14 +584,14 @@ const Portfolio = () => {
   // Update the Navigation component
   const Navigation = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isScrolled, setIsScrolled] = useState(false);
+    const [isSticky, setIsSticky] = useState(false);
+    const navigationRef = useRef(null);
   
     useEffect(() => {
       const handleScroll = () => {
-        if (window.pageYOffset > 0) {
-          setIsScrolled(true);
-        } else {
-          setIsScrolled(false);
+        if (navigationRef.current) {
+          const navRect = navigationRef.current.getBoundingClientRect();
+          setIsSticky(navRect.top <= 0);
         }
       };
   
@@ -605,8 +605,9 @@ const Portfolio = () => {
   
     return (
       <nav
-        className={`fixed top-0 left-0 right-0 bg-gray-800/90 backdrop-blur-sm z-50 border-b border-gray-700 transition-all duration-300 ${
-          isScrolled ? 'shadow-md' : ''
+        ref={navigationRef}
+        className={`bg-gray-800/90 backdrop-blur-sm z-50 border-b border-gray-700 transition-all duration-300 ${
+          isSticky ? 'fixed top-0 left-0 right-0 shadow-md' : ''
         }`}
       >
         <div className="max-w-7xl mx-auto px-4">
@@ -632,7 +633,7 @@ const Portfolio = () => {
           <div className="md:hidden">
             <div className="flex items-center justify-between py-3">
               {/* Your logo or brand name could go here */}
-              <div className="text-gray-300 font-bold">Portfolio</div>
+              <div className="text-gray-300 font-bold">100 Days of AI</div>
               
               {/* Mobile Menu Button */}
               <button
