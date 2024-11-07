@@ -10,13 +10,15 @@ const Portfolio = () => {
   const [displayedEntries, setDisplayedEntries] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [activePopup, setActivePopup] = useState(null);
-  const entriesPerLoad = 15;
+  const entriesPerLoad = 10;
   const [weeklyReflections, setWeeklyReflections] = useState([]);
   const [activeReflection, setActiveReflection] = useState(null);
   const [displayedWeeks, setDisplayedWeeks] = useState(9);
   const [tools, setTools] = useState([]);
   const [displayedTools, setDisplayedTools] = useState([]);
   const [achievements, setAchievements] = useState([]);
+  const [displayedAchievements, setDisplayedAchievements] = useState([]);
+  const achievementsPerLoad = 4;
   const toolsPerLoad = 6;
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
   const [activeSection, setActiveSection] = useState('');
@@ -81,8 +83,7 @@ const Portfolio = () => {
   }, []);
 
   const loadProgressData = () => {
-    const basePath = getBasePath();
-    Papa.parse(`${basePath}/data/progress.csv`, {
+    Papa.parse(`${baseUrl}/data/progress.csv`, {
       delimiter: "|",
       download: true,
       header: true,
@@ -105,10 +106,10 @@ const Portfolio = () => {
     setDisplayedEntries(prev => [...prev, ...newEntries]);
     setIsLoading(false);
   };
+  
 
   const loadWeeklyReflections = () => {
-    const basePath = getBasePath();
-    Papa.parse(`${basePath}/data/reflection.csv`, {
+    Papa.parse(`${baseUrl}/data/reflection.csv`, {
       download: true,
       delimiter: '|',
       header: true,
@@ -122,8 +123,7 @@ const Portfolio = () => {
   };
   
   const loadTools = () => {
-    const basePath = getBasePath();
-    Papa.parse(`${basePath}/data/tools.csv`, {
+    Papa.parse(`${baseUrl}/data/tools.csv`, {
       download: true,
       header: true,
       complete: (results) => {
@@ -144,19 +144,26 @@ const Portfolio = () => {
   };
   
   const loadAchievements = () => {
-    const basePath = getBasePath();
-    Papa.parse(`${basePath}/data/achievements.csv`, {
+    Papa.parse(`${baseUrl}/data/achievements.csv`, {
       download: true,
       header: true,
       delimiter: '|',
       complete: (results) => {
-        setAchievements(results.data.filter(achievement => achievement.title));
+        const validAchievements = results.data.filter(achievement => achievement.title);
+        setAchievements(validAchievements);
+        setDisplayedAchievements(validAchievements.slice(0, achievementsPerLoad));
       },
       error: (error) => {
         console.error("Error loading achievements:", error.message);
       }
     });
-  };  
+  };
+  
+  const loadMoreAchievements = () => {
+    const currentLength = displayedAchievements.length;
+    const newAchievements = tools.slice(currentLength, currentLength + achievementsPerLoad);
+    setDisplayedAchievements([...displayedAchievements, ...newAchievements]);
+  };
 
   // Get color gradient based on day number
   const getGradient = (index) => {
@@ -581,100 +588,110 @@ const Portfolio = () => {
   const handlePrevProject = () => {
     setCurrentProjectIndex((prev) => (prev - 1 + futureProjects.length) % futureProjects.length);
   };
+
   // Update the Navigation component
   const Navigation = () => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isSticky, setIsSticky] = useState(false);
-    const navigationRef = useRef(null);
-  
-    useEffect(() => {
-      const handleScroll = () => {
-        if (navigationRef.current) {
-          const navRect = navigationRef.current.getBoundingClientRect();
-          setIsSticky(navRect.top <= 0);
-        }
-      };
-  
-      window.addEventListener('scroll', handleScroll);
-      return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-  
-    const toggleMenu = () => {
-      setIsMenuOpen(!isMenuOpen);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.pageYOffset > 0) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
     };
-  
-    return (
-      <nav
-        ref={navigationRef}
-        className={`bg-gray-800/90 backdrop-blur-sm z-50 border-b border-gray-700 transition-all duration-300 ${
-          isSticky ? 'fixed top-0 left-0 right-0 shadow-md' : ''
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4">
-          {/* Desktop Navigation */}
-          <div className="hidden md:block">
-            <ul className="flex justify-center space-x-8 py-4">
-              {navLinks.map(({ label, target }) => (
-                <li key={target}>
-                  <button
-                    onClick={() => scrollToSection(target)}
-                    className={`hover:text-blue-400 transition-all duration-300 ${
-                      activeSection === target ? 'text-blue-400 font-bold' : 'text-gray-300'
-                    }`}
-                  >
-                    {label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-  
-          {/* Mobile Navigation */}
-          <div className="md:hidden">
-            <div className="flex items-center justify-between py-3">
-              {/* Your logo or brand name could go here */}
-              <div className="text-gray-300 font-bold">Portfolio</div>
-              
-              {/* Mobile Menu Button */}
-              <button
-                onClick={toggleMenu}
-                className="text-gray-300 hover:text-blue-400 transition-all duration-300"
-              >
-                {isMenuOpen ? (
-                  <X size={24} />
-                ) : (
-                  <Menu size={24} />
-                )}
-              </button>
-            </div>
-  
-            {/* Mobile Menu Items */}
-            {isMenuOpen && (
-              <div className="pb-4">
-                <ul className="space-y-2">
-                  {navLinks.map(({ label, target }) => (
-                    <li key={target}>
-                      <button
-                        onClick={() => {
-                          scrollToSection(target);
-                          setIsMenuOpen(false);
-                        }}
-                        className={`block w-full text-left px-4 py-2 hover:bg-gray-700 rounded transition-all duration-300 ${
-                          activeSection === target ? 'text-blue-400 font-bold' : 'text-gray-300'
-                        }`}
-                      >
-                        {label}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        </div>
-      </nav>
-    );
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
+
+  return (
+    <nav
+      className={`fixed top-0 left-0 right-0 bg-gray-800/90 backdrop-blur-sm z-50 border-b border-gray-700 transition-all duration-300 ${
+        isScrolled ? 'shadow-md' : ''
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4">
+        {/* Desktop Navigation */}
+        <div className="hidden md:block">
+          <ul className="flex justify-center space-x-8 py-4">
+            {navLinks.map(({ label, target }) => (
+              <li key={target}>
+                <button
+                  onClick={() => scrollToSection(target)}
+                  className={`hover:text-blue-400 transition-all duration-300 ${
+                    activeSection === target ? 'text-blue-400 font-bold' : 'text-gray-300'
+                  }`}
+                >
+                  {label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Mobile Navigation */}
+        <div className="md:hidden">
+          <div className="flex items-center justify-between py-3">
+            {/* Your logo or brand name could go here */}
+            
+              <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-5xl md:text-6xl font-bold"
+          >
+            <h3 className="text-2xl font-bold text-blue-400 mb-4">
+              100 Days of AI
+            </h3>
+          </motion.h1>
+            
+            {/* Mobile Menu Button */}
+            <button
+              onClick={toggleMenu}
+              className="text-gray-300 hover:text-blue-400 transition-all duration-300"
+            >
+              {isMenuOpen ? (
+                <X size={24} />
+              ) : (
+                <Menu size={24} />
+              )}
+            </button>
+          </div>
+
+          {/* Mobile Menu Items */}
+          {isMenuOpen && (
+            <div className="pb-4">
+              <ul className="space-y-2">
+                {navLinks.map(({ label, target }) => (
+                  <li key={target}>
+                    <button
+                      onClick={() => {
+                        scrollToSection(target);
+                        setIsMenuOpen(false);
+                      }}
+                      className={`block w-full text-left px-4 py-2 hover:bg-gray-700 rounded transition-all duration-300 ${
+                        activeSection === target ? 'text-blue-400 font-bold' : 'text-gray-300'
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </div>
+    </nav>
+  );
+};
   
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -1386,7 +1403,7 @@ const Portfolio = () => {
                 Be Part of Our AI Community
               </h2>
             </div>
-            <img src="images/community.png" alt="AI Innovators Hub Logo" className="mx-auto h-24 mb-6" />
+            <img src={`${baseUrl}/images/community.png`} alt="AI Innovators Hub Logo" className="mx-auto h-24 mb-6" />
 
             <p className="text-gray-300 mb-8">
               Welcome to the <span className="text-blue-400 font-semibold">AI Innovators Hub</span>, a thriving community of passionate AI enthusiasts, developers, and innovators! Whether you're just starting your AI journey or you're an experienced professional, this group is the perfect place to exchange ideas, share resources, collaborate on projects, and stay updated on the latest trends in AI.
