@@ -367,7 +367,7 @@ const Portfolio = () => {
       setIsImageLoading(true);
     }, [reflection]);
 
-    const imagePath = `${baseUrl}/images/reflections/week${reflection.weekNumber}.png`;
+    const imagePath = `${baseUrl}/images/reflections/week${reflection.weekNumber}.jpg`;
 
     return (
       <div
